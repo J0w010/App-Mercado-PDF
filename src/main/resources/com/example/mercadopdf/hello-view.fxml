@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.mercadopdf.HelloController">
+    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+
+    <Label text="Gerador de Etiquetas - Mercado" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- Campos do produto -->
+    <HBox spacing="10">
+        <TextField fx:id="nomeProduto" promptText="Nome do produto" HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="quilometragem" promptText="Unidade (KG, UN...)" prefWidth="130"/>
+        <TextField fx:id="preco" promptText="Preço (ex: 17,90)" prefWidth="110"/>
+        <Button text="+ Adicionar" onAction="#onAdicionarProduto"
+                style="-fx-font-size: 13px;"/>
+    </HBox>
+
+    <!-- Lista de produtos -->
+    <Label text="Produtos adicionados:"/>
+    <ListView fx:id="listaProdutos" prefHeight="180"/>
+    <HBox spacing= "10">
+        <Button text="Remover selecionado" onAction="#onRemoverProduto"
+                style="-fx-text-fill: red;"/>
+        <Button text="Remover Tudo" onAction="#RemoverTudoProduto"
+                style="-fx-text-fill: red;"/>
+    </HBox>
+
+    <!-- Tamanhos -->
+    <Label text="Tamanho das folhas:"/>
+    <HBox spacing="20">
+        <CheckBox fx:id="checkA4" text="A4" selected="true"/>
+        <CheckBox fx:id="checkA5" text="A5"/>
+        <CheckBox fx:id="checkA6" text="A6 (Paisagem)"/>
+    </HBox>
+
+    <Button text="Gerar PDFs" onAction="#onGerarPdfClick"
+            style="-fx-font-size: 14px; -fx-pref-width: 200px;"/>
+</VBox>
