@@ -2,6 +2,8 @@ package com.example.mercadopdf;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -42,7 +44,7 @@ public class PdfGenerator {
                 if (centavos.length() == 1) centavos += "0";
 
                 pdf.addNewPage(pageSize);
-                gerarEtiqueta(pdf, p.nome, p.unidade, reais, centavos, pageSize);
+                gerarEtiqueta(pdf, p.nome, p.unidade, reais, centavos, pageSize, t);
             }
 
             pdf.close();
@@ -53,9 +55,10 @@ public class PdfGenerator {
     }
 
     private static void gerarEtiqueta(PdfDocument pdf, String nome, String unidade,
-                                      String reais, String centavos, PageSize tamanho) throws Exception {
+                                      String reais, String centavos, PageSize tamanho, String nomeTamanho) throws Exception {
         PdfCanvas canvas = new PdfCanvas(pdf.getLastPage());
-        PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+        String fontePath = PdfGenerator.class.getResource("Fonts/ThirdRail.ttf").getPath();
+        PdfFont bold = PdfFontFactory.createFont(fontePath);
 
         float W = tamanho.getWidth();
         float H = tamanho.getHeight();
@@ -66,7 +69,13 @@ public class PdfGenerator {
         float tamanhoNome = 48f * (W / PageSize.A4.getWidth());
         float nomeWidth = bold.getWidth(nome.toUpperCase(), tamanhoNome);
         float nomeX = (W - nomeWidth) / 2f;
-        float nomeY = H - margem - tamanhoNome;
+        float offsetVertical;
+        switch (nomeTamanho) {
+            case "A6": offsetVertical = -H * 0.10f; break;
+            case "A5": offsetVertical = (float) (H * 0.15); break;
+            default: offsetVertical = (float) (H * 0.15); break;
+        }
+        float nomeY = H - margem - tamanhoNome - offsetVertical;
 
         canvas.beginText()
                 .setFontAndSize(bold, tamanhoNome)
